@@ -118,9 +118,13 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
   
   def strictlyOrdered(t: Tree): Boolean = {
     val (b, _) = t.foldLeft((true, None: Option[Int])){
-      throw new UnsupportedOperationException
+      //I don't understand this code
+    (acc, d) => acc match {
+          case (b1, None) => (b1, Some(d))
+          case (b2, nextInt) => (nextInt.get < d && b2, Some(d))
+        }
     }
-    b
+    return b
   }
   
 
@@ -152,38 +156,74 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
         case TNumber => TNumber
         case tgot => err(tgot, e1)
       }
-      case Unary(Not, e1) =>
-        throw new UnsupportedOperationException
-      case Binary(Plus, e1, e2) =>
-        throw new UnsupportedOperationException
-      case Binary(Minus|Times|Div, e1, e2) => 
-        throw new UnsupportedOperationException
-      case Binary(Eq|Ne, e1, e2) =>
-        throw new UnsupportedOperationException
-      case Binary(Lt|Le|Gt|Ge, e1, e2) =>
-        throw new UnsupportedOperationException
-      case Binary(And|Or, e1, e2) =>
-        throw new UnsupportedOperationException
-      case Binary(Seq, e1, e2) =>
-        throw new UnsupportedOperationException
-      case If(e1, e2, e3) =>
-        throw new UnsupportedOperationException
+      case Unary(Not, e1) => typ(e1) match {
+        case TBool => TBool
+        case tgot => err(tgot, e1)
+      }
+      case Binary(Plus, e1, e2) => (typ(e1),typ(e2)) match {
+        case (TString, TString) => TString
+        case (TNumber, TNumber) => TNumber
+        case _ => err(typ(e1),e1)
+      }
+        
+      case Binary(Minus|Times|Div, e1, e2) => (typ(e1),typ(e2)) match {
+        case (TNumber, TNumber) => TNumber
+        case _ => err(typ(e1),e1)
+      }
+      case Binary(Eq|Ne, e1, e2) => (typ(e1), typ(e2)) match {
+        case (TFunction(params, tret), _) => err(TFunction(params, tret),e1)
+        case (_, TFunction(params, tret)) => err(TFunction(params, tret),e2)
+        case _ => if(typ(e1) == typ(e2)) typ(e1) else err(typ(e2),e2)
+      }
+      case Binary(Lt|Le|Gt|Ge, e1, e2) => (typ(e1),typ(e2)) match {
+        case (TNumber, TNumber) => TBool
+        case (TString, TString) => TBool
+        case _ => err(typ(e1),e1)
+      }
+      case Binary(And|Or, e1, e2) => (typ(e1),typ(e2)) match {
+        case (TBool, TBool) => TBool
+        case _ => err(typ(e1),e1)
+      }
+
+      case Binary(Seq, e1, e2) => typ(e2)
+        
+      case If(e1, e2, e3) => {
+        if(typ(e1) != TBool) return err(typ(e1),e1)
+        if(typ(e2) == typ(e3)) return typ(e2) else return err(typ(e3),e3)
+      }
+      //p		name
+      //params	params
+      //tann	return type
+      //e1		evaluated func
       case Function(p, params, tann, e1) => {
         // Bind to env1 an environment that extends env with an appropriate binding if
         // the function is potentially recursive.
+        //(p,tann) is a tuple with function name, return type
         val env1 = (p, tann) match {
-          case (Some(f), Some(tret)) =>
+          //if both are named, map the function to it's tuple
+          case (Some(f), Some(tret)) => 
             val tprime = TFunction(params, tret)
             env + (f -> tprime)
+          //if the function is unnamed, don't update the environment
           case (None, _) => env
+          //throw an error in other scenarios
           case _ => err(TUndefined, e1)
         }
         // Bind to env2 an environment that extends env1 with bindings for params.
-        val env2 = throw new UnsupportedOperationException
+        // foldleft takes in an initial value env1, and has a function with an accumulator and a mapping from x1 to t1
+        val env2 = params.foldLeft(env1)({
+          case(acc,(x1,t1)) => acc + (x1 -> t1)
+        })
         // Match on whether the return type is specified.
         tann match {
-          case None => throw new UnsupportedOperationException
-          case Some(tret) => throw new UnsupportedOperationException
+          case None => {
+            val t = typeInfer(env2, e1)
+            return TFunction(params, t) 
+            }
+          case Some(tret) => {
+            val t = typeInfer(env2, e1)
+            if(TFunction(params, tret) != TFunction(params, t)) err(TFunction(params, t),e1) else TFunction(params, t)
+          }
         }
       }
       case Call(e1, args) => typ(e1) match {
