@@ -189,7 +189,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
         
       case If(e1, e2, e3) => {
         if(typ(e1) != TBool) return err(typ(e1),e1)
-        if(typ(e2) == typ(e3)) return typ(e2) else return err(typ(e3),e3)
+        if(typ(e2) == typ(e3)) return typ(e2) else return err(typ(e2),e2)
       }
       //p		name
       //params	params
@@ -228,17 +228,31 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       }
       case Call(e1, args) => typ(e1) match {
         case TFunction(params, tret) if (params.length == args.length) => {
+          //make sure every expression return type matches
           (params, args).zipped.foreach {
-            throw new UnsupportedOperationException
+            case p : ((String, Typ), Expr) => if(p._1._2 != typ(p._2)) return err(p._1._2, p._2)
           };
-          tret
+          //returns the expected return type
+          return tret
         }
         case tgot => err(tgot, e1)
       }
       case Obj(fields) =>
-        throw new UnsupportedOperationException
-      case GetField(e1, f) =>
-        throw new UnsupportedOperationException
+      {
+      val rf : Map[String, Typ]= Map()
+    		  fields.foreach {
+        	case p : (String, Expr) => rf + (p._1 -> typ(p._2))
+      	};
+      	return TObj(rf)
+      }
+      case GetField(e1, f) => typ(e1) match {
+        case TObj(rf) => rf.get(f) match
+        {
+          case Some(x) => return x
+          case None => return err(typ(e1), e1)
+        }
+        case _ => return err(typ(e1), e1)
+      }
     }
   }
   
