@@ -188,7 +188,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case Binary(Seq, e1, e2) => typ(e2)
         
       case If(e1, e2, e3) => {
-        if(typ(e1) != TBool) return err(typ(e1),e1)
+        if(typ(e1) != TNumber) return err(typ(e1),e1)
         if(typ(e2) == typ(e3)) return typ(e2) else return err(typ(e2),e2)
       }
       //p		name
