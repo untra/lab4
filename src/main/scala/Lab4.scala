@@ -342,6 +342,18 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case Binary(And, B(b1), e2) => if (b1) e2 else B(false)
       case Binary(Or, B(b1), e2) => if (b1) B(true) else e2
       case ConstDecl(x, v1, e2) if isValue(v1) => substitute(e2, v1, x)
+      case GetField(e1,f) => e1 match {
+        case Obj(fields) => {
+          fields.foreach {
+        	case p : (String, Expr) => if (!isValue(p._2)) throw new StuckError(e)
+          }
+        fields.get(f) match{
+          case None => throw new StuckError(e)
+          case Some(x) => return x
+        }
+        }
+        case _ => throw new StuckError(e)
+      }
       case Call(v1, args) if isValue(v1) && (args forall isValue) =>
         v1 match {
           //v1 must be a function
@@ -354,11 +366,12 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
             }
             p match {
               case None => e1p
-              case Some(x1) => substitute(e1, e1p, x1)
+              case Some(x1) => substitute(e1p, v1, x1)
             }
           }
           case _ => throw new StuckError(e)
         }
+
       /*** Fill-in more cases here. ***/
         
       /* Inductive Cases: Search Rules */
@@ -366,12 +379,17 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case Unary(uop, e1) => Unary(uop, step(e1))
       case Binary(bop, v1, e2) if isValue(v1) => Binary(bop, v1, step(e2))
       case Binary(bop, e1, e2) => Binary(bop, step(e1), e2)
+      case If(B(true), e2, e3) => e2
+      case If(B(false), e2, e3) => e3
       case If(e1, e2, e3) => If(step(e1), e2, e3)
       case ConstDecl(x, e1, e2) => ConstDecl(x, step(e1), e2)
       /*** Fill-in more cases here. ***/
       
       /* Everything else is a stuck error. Should not happen if e is well-typed. */
-      case _ => throw StuckError(e)
+      case _ => {
+        println("$"+e+"$")
+        throw StuckError(e)
+      }
     }
   }
   
