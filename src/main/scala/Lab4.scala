@@ -249,14 +249,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
         }
         case tgot => err(tgot, e1)
       }
-      case Obj(fields) =>
-      {
-      val rf : Map[String, Typ]= Map()
-    		  fields.foreach {
-        	case p : (String, Expr) => rf + (p._1 -> typ(p._2))
-      	};
-      	return TObj(rf)
-      }
+      case Obj(fields) => TObj(fields.map { case (s, e) => (s, typ(e)) })
 
       case GetField(e1, f) => typ(e1) match {
         case TObj(rf) => rf.get(f) match
@@ -310,16 +303,28 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case If(e1, e2, e3) => If(subst(e1), subst(e2), subst(e3))
       case Var(y) => if (x == y) v else e
       case ConstDecl(y, e1, e2) => ConstDecl(y, subst(e1), if (x == y) e2 else subst(e2))
-      case Function(p, params, tann, e1) =>
-      	Function(p, params, tann, subst(e1))
-      case Call(e1, args) =>
-        Call(subst(e1), args map subst)
-      case Obj(fields) => {
-        //returns an object with each of it's values substituted on
-    	Obj(fields.mapValues((v => subst(v))))
-      }
-      case GetField(e1, f) =>
-        GetField(subst(e1), f)
+//      case Function(p, params, tann, e1) => 
+//        val truth = true
+//        params.foldLeft(truth){
+//          case (truth, el) => truth && ( el._1 != x) 
+//        }
+//        
+//        p match {
+//        case None => if(!truth) return Function(p, params, tann, subst(e1))
+//        case Some(name) => e
+//      }
+//      	Function(p, params, tann, subst(e1))
+
+      	case Call(e1, args) => Call(subst(e1), args map subst)      
+		case Obj(field) => Obj(field.mapValues((v => subst(v))))
+      case GetField(e1, f) => if (x != f) GetField(subst(e1), f) else e
+      case Function(p, params, tann, e1) => {
+        if (params.exists((t1: (String, Typ)) => t1._1 == x) || Some(x) == p) {
+          e
+        } else {
+          Function(p, params, tann, subst(e1))
+        }
+      }    
     }
   }
   
@@ -342,36 +347,9 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case Binary(And, B(b1), e2) => if (b1) e2 else B(false)
       case Binary(Or, B(b1), e2) => if (b1) B(true) else e2
       case ConstDecl(x, v1, e2) if isValue(v1) => substitute(e2, v1, x)
-      case GetField(e1,f) => e1 match {
-        case Obj(fields) => {
-          fields.foreach {
-        	case p : (String, Expr) => if (!isValue(p._2)) throw new StuckError(e)
-          }
-        fields.get(f) match{
-          case None => throw new StuckError(e)
-          case Some(x) => return x
-        }
-        }
-        case _ => throw new StuckError(e)
-      }
-      case Call(v1, args) if isValue(v1) && (args forall isValue) =>
-        v1 match {
-          //v1 must be a function
-          case Function(p, params, _, e1) => {
-            //each function parameter corresponds to a (string, type)
-            //((string, type), expr)
-            val e1p = (params, args).zipped.foldRight(e1){
-              //case p : ((String, Typ), Expr) => Substitute(p._2._1)
-              case (i,acc) => substitute(acc,i._2,i._1._1)
-            }
-            p match {
-              case None => e1p
-              case Some(x1) => substitute(e1p, v1, x1)
-            }
-          }
-          case _ => throw new StuckError(e)
-        }
-
+      case Binary(Minus, N(n1), N(n2)) => N(n1 - n2)
+      case Binary(Times, N(n1), N(n2)) => N(n1 * n2)
+      case Binary(Div, N(n1), N(n2)) => N(n1 / n2)
       /*** Fill-in more cases here. ***/
         
       /* Inductive Cases: Search Rules */
@@ -383,7 +361,72 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case If(B(false), e2, e3) => e3
       case If(e1, e2, e3) => If(step(e1), e2, e3)
       case ConstDecl(x, e1, e2) => ConstDecl(x, step(e1), e2)
+
       /*** Fill-in more cases here. ***/
+
+//      case Call(v1, args) if isValue(v1) && (args forall isValue) =>
+//        v1 match {
+//          //v1 must be a function
+//          case Function(p, params, _, e1) => {
+//            //each function parameter corresponds to a (string, type)
+//            //((string, type), expr)
+//            val e1p = (params, args).zipped.foldRight(e1){
+//              //case p : ((String, Typ), Expr) => Substitute(p._2._1)
+//              case (((s,t),v),acc) => substitute(acc,v,s)
+//            }
+//            p match {
+//              case None => e1p
+//              case Some(x1) => substitute(e1p, v1, x1)
+//            }
+//          }
+//          case _ => throw new StuckError(e)
+//        }
+      case Call((func @ Function(p, params, _, bod)), args) if args.forall(isValue) => {
+          val bp = p match {
+            case Some(f) => substitute(bod, func, f)
+            case None => bod
+          }
+        params.zip(args).foldLeft(bp){
+         (e1: Expr, t1: ((String, Typ), Expr)) => substitute(e1, t1._2, t1._1._1)
+        }
+      }
+
+      case Call(Function(p, params, tann, bod), args) => {
+        Call(Function(p, params, tann, bod), mapFirst(
+            (arg: Expr) => if (isValue(arg)) { 
+               None
+              } 
+              else {
+               Some(step(arg))
+              }
+          )(args))
+      }  
+
+      case Call(e1, args) => e1 match{
+        case Function(_,_,_,_) => Call(step(e1), args)
+        case _ => if(isValue(e1)) throw new StuckError(e) else Call(step(e1), args)
+      }
+
+      case Obj(f) => {
+        val fList = f.toList
+        def newFunction(arg: (String, Expr)): Option[(String, Expr)] = {
+          arg match {
+            case (s, e1) => if (!isValue(e1)) Some(s, step(e1)) else None
+          }
+        }
+        val newList = mapFirst(newFunction)(fList)
+        val fMap = newList.toMap
+        Obj(fMap)
+      }
+
+      case GetField(Obj(fields), f) => fields.get(f) match {
+        case Some(e) => e 
+        case None => throw new StuckError(e)
+      }
+      case GetField(e1, f) => GetField(step(e1), f)
+      
+      
+      
       
       /* Everything else is a stuck error. Should not happen if e is well-typed. */
       case _ => {
