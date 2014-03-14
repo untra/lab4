@@ -1,34 +1,31 @@
 [0m[[0mdebug[0m] [0m[0m
 [0m[[0mdebug[0m] [0mInitial source changes: [0m
 [0m[[0mdebug[0m] [0m	removed:Set()[0m
-[0m[[0mdebug[0m] [0m	added: Set()[0m
-[0m[[0mdebug[0m] [0m	modified: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala)[0m
-[0m[[0mdebug[0m] [0mRemoved products: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$treeFromList$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$processFile$2.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$substitute$2.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$reverse$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$Tree.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$substitute$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$processFile$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$step$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$Empty$.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$2.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$typeInfer$2.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$5.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$Node.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$3.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$sum$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$6.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$hasFunctionTyp$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$4.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$compressFold$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$$anonfun$typeInfer$1.class, /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes/Lab4$Node$.class)[0m
+[0m[[0mdebug[0m] [0m	added: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala, /home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/jsy/lab4/ast.scala)[0m
+[0m[[0mdebug[0m] [0m	modified: Set()[0m
+[0m[[0mdebug[0m] [0mRemoved products: Set()[0m
 [0m[[0mdebug[0m] [0mModified external sources: Set()[0m
 [0m[[0mdebug[0m] [0mModified binary dependencies: Set()[0m
-[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala)[0m
+[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala, /home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/jsy/lab4/ast.scala)[0m
 [0m[[0mdebug[0m] [0m[0m
 [0m[[0mdebug[0m] [0mSources indirectly invalidated by:[0m
-[0m[[0mdebug[0m] [0m	product: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala)[0m
+[0m[[0mdebug[0m] [0m	product: Set()[0m
 [0m[[0mdebug[0m] [0m	binary dep: Set()[0m
 [0m[[0mdebug[0m] [0m	external source: Set()[0m
-[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala)[0m
-[0m[[0minfo[0m] [0mCompiling 1 Scala source to /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes...[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala, /home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/jsy/lab4/ast.scala)[0m
+[0m[[0mdebug[0m] [0mRecompiling all 2 sources: invalidated sources (2) exceeded 50.0% of all sources[0m
+[0m[[0minfo[0m] [0mCompiling 2 Scala sources to /home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes...[0m
 [0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.10.3[0m
 [0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.10.3[0m
-[0m[[0mdebug[0m] [0mRunning cached compiler 7eabf3ab, interfacing (CompilerInterface) with Scala compiler version 2.10.3[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 25da5bd5, interfacing (CompilerInterface) with Scala compiler version 2.10.3[0m
 [0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
 [0m[[0mdebug[0m] [0m	-bootclasspath[0m
 [0m[[0mdebug[0m] [0m	/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/netx.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/plugin.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/rhino.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/jfr.jar:/usr/lib/jvm/java-7-openjdk-amd64/jre/classes:/home/samuel/.sbt/boot/scala-2.10.3/lib/scala-library.jar[0m
 [0m[[0mdebug[0m] [0m	-classpath[0m
 [0m[[0mdebug[0m] [0m	/home/samuel/Documents/pl/CSCI-3155/lab4/target/scala-2.10/classes:/home/samuel/Documents/pl/CSCI-3155/lab4/lib/scalatest_2.10-2.0.jar:/home/samuel/Documents/pl/CSCI-3155/lab4/lib/liblab4.jar[0m
-[0m[[33mwarn[0m] [0m/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala:347: fruitless type test: a value of type (((String, jsy.lab4.ast.Typ), jsy.lab4.ast.Expr), jsy.lab4.ast.Expr) cannot also be a ((String, jsy.lab4.ast.Typ), jsy.lab4.ast.Expr) (but still might match its erasure)[0m
-[0m[[33mwarn[0m] [0m              case p : ((String, Typ), Expr) => throw new UnsupportedOperationException[0m
-[0m[[33mwarn[0m] [0m                       ^[0m
-[0m[[33mwarn[0m] [0mone warning found[0m
-[0m[[0mdebug[0m] [0mScala compilation took 9.788250707 s[0m
-[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set()[0m
-[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set()[0m
+[0m[[0mdebug[0m] [0mScala compilation took 15.626238864 s[0m
+[0m[[0mdebug[0m] [0mInvalidated by transitive public inheritance: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/jsy/lab4/ast.scala, /home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala)[0m
+[0m[[0mdebug[0m] [0mInvalidated by direct dependency: Set(/home/samuel/Documents/pl/CSCI-3155/lab4/src/main/scala/Lab4.scala)[0m
 [0m[[0mdebug[0m] [0mNew invalidations:[0m
 [0m[[0mdebug[0m] [0m	Set()[0m
 [0m[[0mdebug[0m] [0mPreviously invalidated, but (transitively) depend on new invalidations:[0m

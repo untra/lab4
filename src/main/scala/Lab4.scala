@@ -273,6 +273,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
   /* Small-Step Interpreter */
   
   def inequalityVal(bop: Bop, v1: Expr, v2: Expr): Boolean = {
+
     require(bop == Lt || bop == Le || bop == Gt || bop == Ge)
     ((v1, v2): @unchecked) match {
       case (S(s1), S(s2)) =>
@@ -292,6 +293,10 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
     }
   }
   
+  /* Small-Step Interpreter with Static Scoping */
+  //we like static scoping
+  //for every instance of x, replace it with v in the expression e
+  //in e, replace all v with x  
   def substitute(e: Expr, v: Expr, x: String): Expr = {
     require(isValue(v))
     
@@ -344,11 +349,12 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
             //each function parameter corresponds to a (string, type)
             //((string, type), expr)
             val e1p = (params, args).zipped.foldRight(e1){
-              case p : ((String, Typ), Expr) => throw new UnsupportedOperationException
+              //case p : ((String, Typ), Expr) => Substitute(p._2._1)
+              case (i,acc) => substitute(acc,i._2,i._1._1)
             }
             p match {
-              case None => throw new UnsupportedOperationException
-              case Some(x1) => throw new UnsupportedOperationException
+              case None => e1p
+              case Some(x1) => substitute(e1, e1p, x1)
             }
           }
           case _ => throw new StuckError(e)

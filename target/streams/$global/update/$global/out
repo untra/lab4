@@ -7,7 +7,7 @@
 [0m[[0mdebug[0m] [0m== resolving dependencies for lab4#lab4_2.10;2.0 [compile][0m
 [0m[[0mdebug[0m] [0m== resolving dependencies lab4#lab4_2.10;2.0->org.scala-lang#scala-library;2.10.3 [compile->default(compile)][0m
 [0m[[0minfo[0m] [0mResolving org.scala-lang#scala-library;2.10.3 ...[0m
-[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@570978c9[0m
+[0m[[0mdebug[0m] [0msbt-chain: Checking cache for: sbt.ivyint.MergedDescriptors@4ddc7d76[0m
 [0m[[0mdebug[0m] [0msbt-chain: module revision found in cache: org.scala-lang#scala-library;2.10.3[0m
 [0m[[0mdebug[0m] [0m	local: revision in cache: org.scala-lang#scala-library;2.10.3[0m
 [0m[[0mdebug[0m] [0m	found org.scala-lang#scala-library;2.10.3 in sbt-chain[0m
@@ -132,7 +132,7 @@
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#scala-reflect;2.10.3!scala-reflect.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.scala-lang#jline;2.10.3!jline.jar[0m
 [0m[[0mdebug[0m] [0m	[NOT REQUIRED] org.fusesource.jansi#jansi;1.4!jansi.jar[0m
-[0m[[0mdebug[0m] [0m:: resolution report :: resolve 353ms :: artifacts dl 17ms[0m
+[0m[[0mdebug[0m] [0m:: resolution report :: resolve 526ms :: artifacts dl 19ms[0m
 [0m[[0mdebug[0m] [0m	report for lab4#lab4_2.10;2.0 compile produced in /home/samuel/Documents/pl/CSCI-3155/lab4/target/resolution-cache/reports/lab4-lab4_2.10-compile.xml[0m
 [0m[[0mdebug[0m] [0m	report for lab4#lab4_2.10;2.0 runtime produced in /home/samuel/Documents/pl/CSCI-3155/lab4/target/resolution-cache/reports/lab4-lab4_2.10-runtime.xml[0m
 [0m[[0mdebug[0m] [0m	report for lab4#lab4_2.10;2.0 test produced in /home/samuel/Documents/pl/CSCI-3155/lab4/target/resolution-cache/reports/lab4-lab4_2.10-test.xml[0m
@@ -146,5 +146,5 @@
 [0m[[0mdebug[0m] [0m	report for lab4#lab4_2.10;2.0 docs produced in /home/samuel/Documents/pl/CSCI-3155/lab4/target/resolution-cache/reports/lab4-lab4_2.10-docs.xml[0m
 [0m[[0mdebug[0m] [0m	report for lab4#lab4_2.10;2.0 pom produced in /home/samuel/Documents/pl/CSCI-3155/lab4/target/resolution-cache/reports/lab4-lab4_2.10-pom.xml[0m
 [0m[[0mdebug[0m] [0m	report for lab4#lab4_2.10;2.0 scala-tool produced in /home/samuel/Documents/pl/CSCI-3155/lab4/target/resolution-cache/reports/lab4-lab4_2.10-scala-tool.xml[0m
-[0m[[0mdebug[0m] [0m	resolve done (353ms resolve - 17ms download)[0m
+[0m[[0mdebug[0m] [0m	resolve done (526ms resolve - 19ms download)[0m
 [0m[[0minfo[0m] [0mDone updating.[0m
