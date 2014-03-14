@@ -34,6 +34,16 @@ object Lab4 extends jsy.util.JsyApplication {
   
   /* Collections and Higher-Order Functions */
   
+  val l = List(1,2,3,4,5)
+  def reverse[T](l: List[T]): List[T] = l.foldLeft(List[T]()){(acc, i) => i :: acc}
+  
+        l.foldLeft(10){
+          case (acc,n) => acc + n
+        };
+  
+  
+  
+  
   /* Lists */
   
   def compressRec[A](l: List[A]): List[A] = l match {
@@ -173,7 +183,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case Binary(Eq|Ne, e1, e2) => (typ(e1), typ(e2)) match {
         case (TFunction(params, tret), _) => err(TFunction(params, tret),e1)
         case (_, TFunction(params, tret)) => err(TFunction(params, tret),e2)
-        case _ => if(typ(e1) == typ(e2)) typ(e1) else err(typ(e2),e2)
+        case _ => if(typ(e1) == typ(e2)) TBool else err(typ(e2),e2)
       }
       case Binary(Lt|Le|Gt|Ge, e1, e2) => (typ(e1),typ(e2)) match {
         case (TNumber, TNumber) => TBool
@@ -188,9 +198,10 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case Binary(Seq, e1, e2) => typ(e2)
         
       case If(e1, e2, e3) => {
-        if(typ(e1) != TNumber) return err(typ(e1),e1)
+        if(typ(e1) != TBool) return err(typ(e1),e1)
         if(typ(e2) == typ(e3)) return typ(e2) else return err(typ(e2),e2)
       }
+      
       //p		name
       //params	params
       //tann	return type
@@ -211,6 +222,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
         }
         // Bind to env2 an environment that extends env1 with bindings for params.
         // foldleft takes in an initial value env1, and has a function with an accumulator and a mapping from x1 to t1
+        
         val env2 = params.foldLeft(env1)({
           case(acc,(x1,t1)) => acc + (x1 -> t1)
         })
@@ -232,7 +244,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
           (params, args).zipped.foreach {
             case p : ((String, Typ), Expr) => if(p._1._2 != typ(p._2)) return err(p._1._2, p._2)
           };
-          //returns the expected return type
+          //returns the expected return typethrow new UnsupportedOperationException
           return tret
         }
         case tgot => err(tgot, e1)
@@ -245,6 +257,7 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       	};
       	return TObj(rf)
       }
+
       case GetField(e1, f) => typ(e1) match {
         case TObj(rf) => rf.get(f) match
         {
@@ -293,13 +306,15 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case Var(y) => if (x == y) v else e
       case ConstDecl(y, e1, e2) => ConstDecl(y, subst(e1), if (x == y) e2 else subst(e2))
       case Function(p, params, tann, e1) =>
-        throw new UnsupportedOperationException
+      	Function(p, params, tann, subst(e1))
       case Call(e1, args) =>
-        throw new UnsupportedOperationException
-      case Obj(fields) =>
-        throw new UnsupportedOperationException
+        Call(subst(e1), args map subst)
+      case Obj(fields) => {
+        //returns an object with each of it's values substituted on
+    	Obj(fields.mapValues((v => subst(v))))
+      }
       case GetField(e1, f) =>
-        throw new UnsupportedOperationException
+        GetField(subst(e1), f)
     }
   }
   
@@ -324,9 +339,12 @@ def mapFirst[A](f: A => Option[A])(l: List[A]): List[A] = l match {
       case ConstDecl(x, v1, e2) if isValue(v1) => substitute(e2, v1, x)
       case Call(v1, args) if isValue(v1) && (args forall isValue) =>
         v1 match {
+          //v1 must be a function
           case Function(p, params, _, e1) => {
+            //each function parameter corresponds to a (string, type)
+            //((string, type), expr)
             val e1p = (params, args).zipped.foldRight(e1){
-              throw new UnsupportedOperationException
+              case p : ((String, Typ), Expr) => throw new UnsupportedOperationException
             }
             p match {
               case None => throw new UnsupportedOperationException
